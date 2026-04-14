@@ -2,29 +2,51 @@
 title: "Project 2 Report"
 author: "Tim Cook, Alex Poplawski, and T.J. Seislove"
 date: "4/14/2026"
-output: html_document
+output:
+  html_document:
+    code_folding: hide
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+library(tidyverse)
+library(janitor)
+library(lubridate)
 ```
 
-## R Markdown
+# 2020 NFl Analysis
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+### Report By: Tim Cook, Alex Poplawski, and T.J. Seislove
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+### Introduction
 
-```{r cars}
-summary(cars)
+The dataset for this project is a record of all games from the 2020 NFL season. There are 270 observations, with each representing a game from the 2020 NFL season.
+
+Each row records the week of play, day of the week, date, and the time of the game on the east coast. It also tracks the winner and loser of each game, as well as the numbers of points scored, yards gained, and turnovers committed by each team.
+
+**Dataset Link**
+
+https://www.pro-football-reference.com/years/2020/games.htm
+
+### Data Import
+
+The dataset was downloaded as a csv file and imported using read_csv(). Janitor::clean_names() was used to take care of column names with capitalization and the "/" character. Then, the names of 5 columns were manually changed for clarity using the rename() function and 2 unnecessary columns were dropped with select(). Finally, the date column was converted from characters to date objects using ymd().
+
+```{r}
+nfl_2020 <- read_csv("nfl2020.csv") %>% clean_names()
+
+nfl_2020 <- nfl_2020 %>% rename(
+  date = date_3,
+  pts_w = pts_9,
+  pts_l = pts_10,
+  to_w = tow,
+  to_l = tol
+)
+
+nfl_2020 <- nfl_2020 %>% select(-c(x6, date_8))
+
+nfl_2020 <- nfl_2020 %>% mutate(
+  date = ymd(date)
+)
 ```
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
