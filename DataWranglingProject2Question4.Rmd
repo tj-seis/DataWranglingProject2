@@ -1,0 +1,65 @@
+---
+title: "DataWranglingProject2Question4"
+author: "TJ Cook"
+date: "4/14/2026"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+require(nycflights13)
+require(sportyR)
+require(statebins)
+require(gridExtra)
+require(usmap)
+require(cartogram)
+require(lubridate)
+require(socviz)
+require(ggformula)
+require(tidyverse)
+require(sf)
+require(maps)
+require(ggrepel)
+require(stringr)
+require(mosaic)
+require(tidyr)
+require(dplyr)
+require(stevedata)
+require(mosaicData)
+require(scales)
+require(Lock5Data)
+require(viridis)
+require(ggplot2)
+knitr::opts_chunk$set(
+  tidy = FALSE,
+  size = "small"
+)
+```
+
+```{r, tidy=TRUE}
+nfl <- read.csv("nfl2020.csv")
+
+# 1. Exploratory Data Analysis (EDA)
+# Quantitative Variable: Total Points
+nfl$Total_Pts <- nfl$PtsW + nfl$PtsL
+hist(nfl$Total_Pts)
+
+#Total Points vs. Week
+plot(nfl$Week, nfl$Total_Pts)
+
+# 2. Patterns by Date (Month and Day)
+nfl$Date <- as.Date(nfl$Date)
+nfl$Month <- months(nfl$Date)
+nfl$DayName <- weekdays(nfl$Date)
+
+# Average points by Month
+aggregate(Total_Pts ~ Month, data = nfl, mean)
+
+# Frequency of games by Day
+table(nfl$DayName)
+
+# 3. Weekend vs. Weekday Analysis
+nfl$IsWeekend <- ifelse(nfl$DayName %in% c("Saturday", "Sunday"), "Weekend", "Weekday")
+
+# Compare average points
+aggregate(Total_Pts ~ IsWeekend, data = nfl, mean)
+```
