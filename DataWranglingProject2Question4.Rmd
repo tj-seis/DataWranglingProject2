@@ -2,7 +2,9 @@
 title: "DataWranglingProject2Question4"
 author: "TJ Cook"
 date: "4/14/2026"
-output: html_document
+output:
+  html_document:
+    code_folding: hide
 ---
 
 ```{r setup, include=FALSE}
@@ -31,12 +33,15 @@ require(viridis)
 require(ggplot2)
 knitr::opts_chunk$set(
   tidy = FALSE,
-  size = "small"
+  size = "small",
+  echo = TRUE,
+  message = FALSE, 
+  warning = FALSE
 )
 ```
 
 ```{r, tidy=TRUE}
-nfl <- read.csv("nfl2020.csv")
+nfl <- read.csv("nfl2020(tidied).csv")
 
 # 1. Exploratory Data Analysis (EDA)
 # Quantitative Variable: Total Points
