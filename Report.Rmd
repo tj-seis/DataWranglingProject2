@@ -12,6 +12,7 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 library(tidyverse)
 library(janitor)
 library(lubridate)
+library(knitr)
 ```
 
 # 2020 NFl Analysis
@@ -49,6 +50,34 @@ nfl_2020 <- nfl_2020 %>% mutate(
   date = ymd(date)
 )
 ```
+
+### Exploratory Data Analysis
+
+```{r}
+nfl <- read.csv("nfl2020(tidied).csv")
+
+# Total Points
+nfl$Total_Pts <- nfl$PtsW + nfl$PtsL
+hist(nfl$Total_Pts)
+```
+
+This histogram displays the distribution of total points scored in NFL games, the total score was calculated by adding the score of the winning and losing team for each entry. We see that the total scores follow a relatively normal distribution centered around 50 total points.
+
+```{r}
+# Total Points vs. Week
+plot(nfl$Week, nfl$Total_Pts)
+```
+
+This plot takes the same total points metric used above, and displays that data across the 17 weeks. There are no clear patterns across the weeks.
+
+```{r}
+# Average points by Month
+nfl$Date <- as.Date(nfl$Date)
+nfl$Month <- months(nfl$Date)
+aggregate(Total_Pts ~ Month, data = nfl, mean) %>% kable()
+```
+
+This table displays the average total points scored for all games in a given month of the NFL season. February is notably lower than the rest of the months, but there are no other visible patterns.
 
 ### Conclusion
 
